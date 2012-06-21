@@ -1,5 +1,7 @@
 source 'http://rubygems.org'
 
+gem 'sinatra'
+
 group :development,:test do
 	gem 'travis-lint'
 	gem 'cucumber'
@@ -7,7 +9,6 @@ group :development,:test do
 	gem 'relish'
 	gem 'capybara'
 	gem 'jasmine', :git => "git://github.com/kenoir/jasmine-gem.git"
-	gem 'sinatra'
 	gem 'rspec'
 	gem 'capybara-mechanize'
 end
