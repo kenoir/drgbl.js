@@ -9,7 +9,7 @@ Simple Drag &amp; Drop in the browser without a framework
 	var draggable = new Draggable();
 	draggable.makeDraggable(draggableDiv);
 
-[See it working on jsFiddle](http://jsfiddle.net/kenturamon/MgEWp/17/)
+[http://drgbl.herokuapp.com/](http://drgbl.herokuapp.com/)
 
 This is a work in progress, try [this completely different but similarly named project](https://github.com/gtramontina/draggable.js) if you want something that works right now.
 
