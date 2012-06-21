@@ -39,8 +39,13 @@ Draggable.prototype.mouseMove = function(e) {
             y: currentMousePosition.y + draggable.offset.y
         }
 
-        draggable.dragging.style.left = movePosition.x + 'px';
-        draggable.dragging.style.top = movePosition.y + 'px';
+        if (draggable.axis == 'x' || draggable.axis == undefined) {
+            draggable.dragging.style.left = movePosition.x + 'px';
+        }
+
+        if (draggable.axis == 'y' || draggable.axis == undefined) {
+            draggable.dragging.style.top = movePosition.y + 'px';
+        }
     }
 }
 Draggable.prototype.mouseUp = function(e) {
@@ -76,4 +81,3 @@ Draggable.mousePosition = function(e) {
         y: posy
     };
 }
-
