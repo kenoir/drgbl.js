@@ -1,0 +1,10 @@
+body{
+    font-family: arial,sans-serif;
+}
+    
+.draggable{
+    border: 2px dashed black;
+    width: 100px;
+    padding:20px;
+    text-align:center;    
+}

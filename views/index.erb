@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/style/main.css"/>
+
+    <script type="text/javascript" src="/javascripts/drgbl.js"></script>
+ </head>
+  <body>
+  <a href="https://github.com/kenoir/drgbl.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <h1>drgbl</h1>
+
+    <div id="dragBox" class="draggable">
+      Drag me!
+    </div>
+
+    <script type="text/javascript">
+      var draggableDiv = document.getElementById("dragBox");
+      var draggable = new Draggable();
+      draggable.makeDraggable(draggableDiv);
+   </script>
+ 
+  </body>
+</html>
