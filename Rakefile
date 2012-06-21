@@ -2,6 +2,8 @@ require 'rubygems'
 require 'cucumber'
 require 'cucumber/rake/task'
 
+task :default => [:jasmine]
+
 begin
   require 'jasmine'
   load 'jasmine/tasks/jasmine.rake'
