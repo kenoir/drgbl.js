@@ -30,22 +30,22 @@ Draggable.prototype.mouseDown = function(e) {
     draggable.dragging = e.target;
 }
 Draggable.prototype.mouseMove = function(e) {
-    var draggable = e.target.draggableInstance;
+    var inPixels = function(n){
+	return n + "px";
+    }
 
-    if (draggable) {
-        var currentMousePosition = Draggable.mousePosition(e);
-        var movePosition = {
-            x: currentMousePosition.x + draggable.offset.x,
-            y: currentMousePosition.y + draggable.offset.y
-        }
+    var currentMousePosition = Draggable.mousePosition(e);
+    var movePosition = {
+	    x: currentMousePosition.x + draggable.offset.x,
+	    y: currentMousePosition.y + draggable.offset.y
+    }
 
-        if (draggable.axis == 'x' || draggable.axis == undefined) {
-            draggable.dragging.style.left = movePosition.x + 'px';
-        }
+    if (draggable.axis == 'x' || draggable.axis == undefined) {
+	    draggable.dragging.style.left = inPixels(movePosition.x);
+    }
 
-        if (draggable.axis == 'y' || draggable.axis == undefined) {
-            draggable.dragging.style.top = movePosition.y + 'px';
-        }
+    if (draggable.axis == 'y' || draggable.axis == undefined) {
+	    draggable.dragging.style.top = inPixels(movePosition.y);
     }
 }
 Draggable.prototype.mouseUp = function(e) {

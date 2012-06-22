@@ -7,7 +7,6 @@ describe("drgbl", function() {
   });
 
   it("should add an instance of the draggable object to the DOM element", function() {
-
     expect(true).toEqual(false);
   });
 
