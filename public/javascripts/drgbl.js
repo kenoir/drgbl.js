@@ -1,9 +1,5 @@
-var Draggable = function() {
-
-}
-
-Draggable.prototype.makeDraggable = function(element, opts) {
-    var draggable = new Draggable();
+var Draggable = function(element, opts) {
+    var draggable = this;
     element.draggableInstance = draggable;
 
     element.addEventListener('mousedown', draggable.mouseDown, false);
