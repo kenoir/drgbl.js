@@ -3,6 +3,7 @@ body{
 }
     
 .draggable{
+    margin-top:20px;
     border: 2px dashed black;
     width: 100px;
     padding:20px;

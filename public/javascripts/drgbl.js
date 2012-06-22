@@ -1,16 +1,17 @@
 var Draggable = function() {
-    this.dragging = undefined;
+
 }
 
 Draggable.prototype.makeDraggable = function(element, opts) {
-    element.draggableInstance = this;
+    var draggable = new Draggable();
+    element.draggableInstance = draggable;
 
-    element.addEventListener('mousedown', this.mouseDown, false);
-    document.addEventListener('mouseup', this.mouseUp, false);
+    element.addEventListener('mousedown', draggable.mouseDown, false);
+    document.addEventListener('mouseup', draggable.mouseUp, false);
 
     if (opts) {
         if (opts.axis == "x" || opts.axis == "y") {
-            this.axis = opts.axis;
+            draggable.axis = opts.axis;
         }
     }
 }
@@ -27,9 +28,11 @@ Draggable.prototype.mouseDown = function(e) {
         x: currentTargetPosition.x - startingPosition.x,
         y: currentTargetPosition.y - startingPosition.y,
     }
-    draggable.dragging = e.target;
+
+    Draggable.dragging = e.target; 
 }
 Draggable.prototype.mouseMove = function(e) {
+    var draggable = Draggable.dragging.draggableInstance; 
     var inPixels = function(n){
 	return n + "px";
     }
@@ -41,17 +44,18 @@ Draggable.prototype.mouseMove = function(e) {
     }
 
     if (draggable.axis == 'x' || draggable.axis == undefined) {
-	    draggable.dragging.style.left = inPixels(movePosition.x);
+	    Draggable.dragging.style.left = inPixels(movePosition.x);
     }
 
     if (draggable.axis == 'y' || draggable.axis == undefined) {
-	    draggable.dragging.style.top = inPixels(movePosition.y);
+	    Draggable.dragging.style.top = inPixels(movePosition.y);
     }
 }
 Draggable.prototype.mouseUp = function(e) {
     var draggable = e.target.draggableInstance;
 
     document.removeEventListener('mousemove', draggable.mouseMove, false);
+    Draggable.dragging = undefined; 
 }
 Draggable.targetPosition = function(e) {
     var extractInt = function(value) {

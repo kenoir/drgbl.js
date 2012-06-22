@@ -13,10 +13,18 @@
       Drag me!
     </div>
 
+    <div id="dragBox2" class="draggable">
+      Me too!
+    </div>
+
+
     <script type="text/javascript">
       var draggableDiv = document.getElementById("dragBox");
+      var draggableDiv2 = document.getElementById("dragBox2");
+
       var draggable = new Draggable();
       draggable.makeDraggable(draggableDiv);
+      draggable.makeDraggable(draggableDiv2);
    </script>
  
   </body>
