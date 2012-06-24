@@ -1,9 +1,11 @@
 var Draggable = function(element, opts) {
     var draggable = this;
+    
+    draggable.events = this.deviceEvents();
     element.draggableInstance = draggable;
 
-    element.addEventListener('mousedown', draggable.mouseDown, false);
-    document.addEventListener('mouseup', draggable.mouseUp, false);
+    element.addEventListener(draggable.events.dragstart, draggable.dragStart, false);
+    document.addEventListener(draggable.events.dragend, draggable.dragEnd, false);
 
     if (opts) {
         if (opts.axis == "x" || opts.axis == "y") {
@@ -11,7 +13,23 @@ var Draggable = function(element, opts) {
         }
     }
 }
-Draggable.prototype.mouseDown = function(e) {
+Draggable.prototype.deviceEvents = function(){
+    var isTouchDevice = !!('ontouchstart' in window) ? 1 : 0;
+
+    var touchEvents = { 
+	    dragstart:'touchstart',
+	    dragging:'touchmove',
+	    dragend:'touchend'
+    }
+    var mouseEvents = {
+	    dragstart:'mousedown',
+	    dragging:'mousemove',
+	    dragend:'mouseup'
+    }
+
+    return ( isTouchDevice ? touchEvents : mouseEvents );
+}
+Draggable.prototype.dragStart = function(e) {
     var draggable = e.target.draggableInstance;
 
     e.target.style.position = 'relative';
@@ -47,7 +65,7 @@ Draggable.prototype.mouseMove = function(e) {
 	    Draggable.dragging.style.top = inPixels(movePosition.y);
     }
 }
-Draggable.prototype.mouseUp = function(e) {
+Draggable.prototype.dragEnd = function(e) {
     var draggable = e.target.draggableInstance;
 
     document.removeEventListener('mousemove', draggable.mouseMove, false);
