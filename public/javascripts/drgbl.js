@@ -22,7 +22,7 @@ var Draggable = function(element, opts) {
 Draggable.prototype.after = function(e,name){
     var draggable = e.target.draggableInstance;
 
-    if(draggable.callback[name] instanceof Function){
+    if(draggable && draggable.callback[name] instanceof Function){
 	    draggable.callback[name].call(e.target);
     }
 }
@@ -78,11 +78,14 @@ Draggable.prototype.dragging = function(e) {
     if (draggable.axis == 'y' || draggable.axis == undefined) {
 	    Draggable.dragging.style.top = inPixels(movePosition.y);
     }
+    draggable.after(e,'dragging');
 }
 Draggable.prototype.dragEnd = function(e) {
     var draggable = e.target.draggableInstance;
 
     document.removeEventListener(draggable.events.dragging, draggable.dragging, false);
+
+    draggable.after(e,'dragend');
     Draggable.dragging = undefined; 
 }
 Draggable.targetPosition = function(e) {

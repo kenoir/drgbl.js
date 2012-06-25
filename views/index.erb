@@ -24,7 +24,9 @@
 
       var opts = {
         callback: {
-          dragstart: function(){console.log(this);}
+          dragstart: function(){this.style.backgroundColor='red';},
+          dragging: function(){this.style.backgroundColor='blue';},
+          dragend: function(){this.style.backgroundColor='green';}
         }
       };
 
