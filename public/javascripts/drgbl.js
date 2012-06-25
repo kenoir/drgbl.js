@@ -7,8 +7,8 @@ var Draggable = function(element, opts) {
 
     element.draggableInstance = draggable;
 
-    element.addEventListener(draggable.events.dragstart, draggable.dragStart, false);
-    document.addEventListener(draggable.events.dragend, draggable.dragEnd, false);
+    draggable.addListener(element,draggable.events.dragstart);
+    draggable.addListener(document,draggable.events.dragend);
 
     if (opts) {
         if (opts.axis == "x" || opts.axis == "y") {
@@ -19,8 +19,12 @@ var Draggable = function(element, opts) {
 	}
     }
 }
+Draggable.prototype.addListener = function(target,eventName){
+    target.addEventListener(eventName,Draggable.handleEvent,false);
+}
 Draggable.prototype.after = function(e,name){
-    var draggable = e.target.draggableInstance;
+    var target = Draggable.dragging || Draggable.eventTarget(e);
+    var draggable = target.draggableInstance; 
 
     if(draggable && draggable.callback[name] instanceof Function){
 	    draggable.callback[name].call(e.target);
@@ -42,11 +46,11 @@ Draggable.prototype.deviceEvents = function(){
 
     return ( isTouchDevice ? touchEvents : mouseEvents );
 }
-Draggable.prototype.dragStart = function(e) {
-    var draggable = e.target.draggableInstance;
+Draggable.prototype.dragstart = function(e) {
+    var draggable = this.draggableInstance;
 
-    e.target.style.position = 'relative';
-    document.addEventListener(draggable.events.dragging, draggable.dragging, false);
+    this.style.position = 'relative';
+    draggable.addListener(document,draggable.events.dragging);
 
     var startingPosition = Draggable.dragPosition(e);
     var currentTargetPosition = Draggable.targetPosition(e);
@@ -56,11 +60,10 @@ Draggable.prototype.dragStart = function(e) {
         y: currentTargetPosition.y - startingPosition.y,
     }
 
-    draggable.after(e,'dragstart');
-    Draggable.dragging = e.target; 
+    Draggable.dragging = this; 
 }
 Draggable.prototype.dragging = function(e) {
-    var draggable = Draggable.dragging.draggableInstance; 
+    var draggable = Draggable.dragging.draggableInstance;
     var inPixels = function(n){
 	return n + "px";
     }
@@ -78,14 +81,10 @@ Draggable.prototype.dragging = function(e) {
     if (draggable.axis == 'y' || draggable.axis == undefined) {
 	    Draggable.dragging.style.top = inPixels(movePosition.y);
     }
-    draggable.after(e,'dragging');
 }
-Draggable.prototype.dragEnd = function(e) {
-    var draggable = e.target.draggableInstance;
-
-    document.removeEventListener(draggable.events.dragging, draggable.dragging, false);
-
-    draggable.after(e,'dragend');
+Draggable.prototype.dragend = function(e) {
+    var draggable = this.draggableInstance;
+    document.removeEventListener(draggable.events.dragging, Draggable.handleEvent, false);
     Draggable.dragging = undefined; 
 }
 Draggable.targetPosition = function(e) {
@@ -97,6 +96,21 @@ Draggable.targetPosition = function(e) {
     return {
         x: extractInt(e.target.style.left),
         y: extractInt(e.target.style.top),
+    }
+}
+Draggable.eventTarget = function(e) {
+    return e.target || e.srcElement;
+}
+Draggable.handleEvent = function(e){
+    if (!e) e = window.event;
+    var target = Draggable.eventTarget(e);
+    var draggable = target.draggableInstance || Draggable.dragging.draggableInstance;
+
+    for(var eventName in draggable.events){
+      if(draggable.events[eventName] == e.type){
+	draggable[eventName].call(target,e);
+	draggable.after(e,eventName);
+      }
     }
 }
 Draggable.dragPosition = function(e) {
