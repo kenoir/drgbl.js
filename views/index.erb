@@ -9,7 +9,7 @@
 
     <h1>drgbl</h1>
 
-    <div id="dragBox" class="draggable">
+    <div id="dragBox1" class="draggable">
       Drag me!
     </div>
 
@@ -17,14 +17,18 @@
       Me too!
     </div>
 
+    <div id="dragBox3" class="draggable">
+      And me!
+    </div>
 
     <script type="text/javascript">
-      var draggableDiv = document.getElementById("dragBox");
+      var draggableDiv1 = document.getElementById("dragBox1");
       var draggableDiv2 = document.getElementById("dragBox2");
+      var draggableDiv3 = document.getElementById("dragBox3");
 
       var opts1 = {
         axis:'x'
-      }
+      };
 
       var opts2 = {
         callback: {
@@ -34,8 +38,20 @@
         }
       };
 
-      new Draggable(draggableDiv,opts1);
+      var opts3 = {
+        bound: function(m){
+          if(m.x < 200 &&
+             m.x > 0 &&
+             m.y < 200 &&
+             m.y > 0 ){return true;}
+          return false;
+        }
+      };
+
+
+      new Draggable(draggableDiv1,opts1);
       new Draggable(draggableDiv2,opts2);
+      new Draggable(draggableDiv3,opts3);
    </script>
  
   </body>

@@ -4,7 +4,7 @@ var Draggable = function(element, opts) {
     draggable.events = this.deviceEvents();
     draggable.axis = undefined;
     draggable.callback = {};
-    draggable.bound = {};
+    draggable.bound = function(m){return true;};
     draggable.options(opts);
 
     element.draggableInstance = draggable;
@@ -20,7 +20,7 @@ Draggable.prototype.options = function(opts){
 	if(opts.callback){
 	    draggable.callback = opts.callback;
 	}
-	if(opts.bound){
+	if(opts.bound instanceof Function){
 	    draggable.bound = opts.bound;
 	}
     }
@@ -81,12 +81,15 @@ Draggable.prototype.dragging = function(e) {
 	    y: currentMousePosition.y + draggable.offset.y
     }
 
-    if (draggable.axis == 'x' || draggable.axis == undefined) {
-	    Draggable.dragging.style.left = inPixels(movePosition.x);
-    }
+    if(draggable.bound(movePosition)){
 
-    if (draggable.axis == 'y' || draggable.axis == undefined) {
+	  if (draggable.axis == 'x' || draggable.axis == undefined) {
+	    Draggable.dragging.style.left = inPixels(movePosition.x);
+          }
+	  if (draggable.axis == 'y' || draggable.axis == undefined) {
 	    Draggable.dragging.style.top = inPixels(movePosition.y);
+          }
+
     }
 }
 Draggable.prototype.dragend = function(e) {
