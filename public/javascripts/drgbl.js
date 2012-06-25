@@ -10,7 +10,6 @@ var Draggable = function(element, opts) {
     element.draggableInstance = draggable;
 
     draggable.addListener(element,draggable.events.dragstart);
-    draggable.addListener(document,draggable.events.dragend);
 }
 Draggable.prototype.options = function(opts){
     var draggable = this;
@@ -58,6 +57,7 @@ Draggable.prototype.dragstart = function(e) {
 
     this.style.position = 'relative';
     draggable.addListener(document,draggable.events.dragging);
+    draggable.addListener(document,draggable.events.dragend);
 
     var startingPosition = Draggable.dragPosition(e);
     var currentTargetPosition = Draggable.targetPosition(e);

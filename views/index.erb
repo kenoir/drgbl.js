@@ -22,7 +22,11 @@
       var draggableDiv = document.getElementById("dragBox");
       var draggableDiv2 = document.getElementById("dragBox2");
 
-      var opts = {
+      var opts1 = {
+        axis:'x'
+      }
+
+      var opts2 = {
         callback: {
           dragstart: function(){this.style.backgroundColor='red';},
           dragging: function(){this.style.backgroundColor='blue';},
@@ -30,8 +34,8 @@
         }
       };
 
-      new Draggable(draggableDiv);
-      new Draggable(draggableDiv2,opts);
+      new Draggable(draggableDiv,opts1);
+      new Draggable(draggableDiv2,opts2);
    </script>
  
   </body>
