@@ -27,7 +27,7 @@ Draggable.prototype.after = function(e,name){
     var draggable = target.draggableInstance; 
 
     if(draggable && draggable.callback[name] instanceof Function){
-	    draggable.callback[name].call(e.target);
+	    draggable.callback[name].call(target);
     }
 }
 Draggable.prototype.deviceEvents = function(){
