@@ -2,6 +2,9 @@ var Draggable = function(element, opts) {
     var draggable = this;
     
     draggable.events = this.deviceEvents();
+    draggable.axis = undefined;
+    draggable.callback = {};
+
     element.draggableInstance = draggable;
 
     element.addEventListener(draggable.events.dragstart, draggable.dragStart, false);
@@ -11,6 +14,16 @@ var Draggable = function(element, opts) {
         if (opts.axis == "x" || opts.axis == "y") {
             draggable.axis = opts.axis;
         }
+	if(opts.callback){
+	    draggable.callback = opts.callback;
+	}
+    }
+}
+Draggable.prototype.after = function(e,name){
+    var draggable = e.target.draggableInstance;
+
+    if(draggable.callback[name] instanceof Function){
+	    draggable.callback[name].call(e.target);
     }
 }
 Draggable.prototype.deviceEvents = function(){
@@ -33,9 +46,9 @@ Draggable.prototype.dragStart = function(e) {
     var draggable = e.target.draggableInstance;
 
     e.target.style.position = 'relative';
-    document.addEventListener('mousemove', draggable.mouseMove, false);
+    document.addEventListener(draggable.events.dragging, draggable.dragging, false);
 
-    var startingPosition = Draggable.mousePosition(e);
+    var startingPosition = Draggable.dragPosition(e);
     var currentTargetPosition = Draggable.targetPosition(e);
 
     draggable.offset = {
@@ -43,15 +56,16 @@ Draggable.prototype.dragStart = function(e) {
         y: currentTargetPosition.y - startingPosition.y,
     }
 
+    draggable.after(e,'dragstart');
     Draggable.dragging = e.target; 
 }
-Draggable.prototype.mouseMove = function(e) {
+Draggable.prototype.dragging = function(e) {
     var draggable = Draggable.dragging.draggableInstance; 
     var inPixels = function(n){
 	return n + "px";
     }
 
-    var currentMousePosition = Draggable.mousePosition(e);
+    var currentMousePosition = Draggable.dragPosition(e);
     var movePosition = {
 	    x: currentMousePosition.x + draggable.offset.x,
 	    y: currentMousePosition.y + draggable.offset.y
@@ -68,7 +82,7 @@ Draggable.prototype.mouseMove = function(e) {
 Draggable.prototype.dragEnd = function(e) {
     var draggable = e.target.draggableInstance;
 
-    document.removeEventListener('mousemove', draggable.mouseMove, false);
+    document.removeEventListener(draggable.events.dragging, draggable.dragging, false);
     Draggable.dragging = undefined; 
 }
 Draggable.targetPosition = function(e) {
@@ -82,7 +96,7 @@ Draggable.targetPosition = function(e) {
         y: extractInt(e.target.style.top),
     }
 }
-Draggable.mousePosition = function(e) {
+Draggable.dragPosition = function(e) {
     var posx = 0;
     var posy = 0;
     if (!e) var e = window.event;

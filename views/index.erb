@@ -22,8 +22,14 @@
       var draggableDiv = document.getElementById("dragBox");
       var draggableDiv2 = document.getElementById("dragBox2");
 
+      var opts = {
+        callback: {
+          dragstart: function(){console.log(this);}
+        }
+      };
+
       new Draggable(draggableDiv);
-      new Draggable(draggableDiv2);
+      new Draggable(draggableDiv2,opts);
    </script>
  
   </body>
