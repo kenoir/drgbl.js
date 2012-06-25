@@ -1,21 +1,28 @@
 var Draggable = function(element, opts) {
     var draggable = this;
-    
+
     draggable.events = this.deviceEvents();
     draggable.axis = undefined;
     draggable.callback = {};
+    draggable.bound = {};
+    draggable.options(opts);
 
     element.draggableInstance = draggable;
 
     draggable.addListener(element,draggable.events.dragstart);
     draggable.addListener(document,draggable.events.dragend);
-
+}
+Draggable.prototype.options = function(opts){
+    var draggable = this;
     if (opts) {
         if (opts.axis == "x" || opts.axis == "y") {
             draggable.axis = opts.axis;
         }
 	if(opts.callback){
 	    draggable.callback = opts.callback;
+	}
+	if(opts.bound){
+	    draggable.bound = opts.bound;
 	}
     }
 }
@@ -85,6 +92,7 @@ Draggable.prototype.dragging = function(e) {
 Draggable.prototype.dragend = function(e) {
     var draggable = this.draggableInstance;
     document.removeEventListener(draggable.events.dragging, Draggable.handleEvent, false);
+    document.removeEventListener(draggable.events.dragend, Draggable.handleEvent, false);
     Draggable.dragging = undefined; 
 }
 Draggable.targetPosition = function(e) {
