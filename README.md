@@ -4,6 +4,15 @@ drgbl.js
 Simple Drag &amp; Drop in the browser without a framework
 
 ## Example
+	var opts = {
+          axis: 'x',
+	  callback: {
+	    dragstart: function(){this.style.backgroundColor='red';},
+	    dragging: function(){this.style.backgroundColor='blue';},
+	    dragend: function(){this.style.backgroundColor='green';}
+	  }
+	};
+
 
 	var draggableDiv = document.getElementById("someDiv");
 	new Draggable(draggableDiv);
