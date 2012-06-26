@@ -33,7 +33,7 @@
 		var draggable = target.draggableInstance; 
 
 		if(draggable && draggable.callback[name] instanceof Function){
-			draggable.callback[name].call(target);
+			draggable.callback[name].call(target,e);
 		}
 	}
 	Draggable.prototype.deviceEvents = function(){
@@ -146,6 +146,8 @@
 				draggable.after(e,eventName);
 			}
 		}
+
+		return true;
 	}
 	Draggable.dragPosition = function(e) {
 		var posx = 0;
