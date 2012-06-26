@@ -117,12 +117,20 @@
 
 		while(localTarget.parentNode && 
 		      localTarget.draggableInstance == undefined){
-		      
+
+		  Draggable.disableNativeDragging(localTarget);
 	          localTarget = localTarget.parentNode	      
 		}
 		if(localTarget.draggableInstance) target = localTarget;
 
 		return target; 
+	}
+	Draggable.disableNativeDragging = function(target){
+		target.draggable = false;
+		target.onmousedown = function(event) {
+			event.preventDefault();
+			return false;
+		};
 	}
 	Draggable.handleEvent = function(e){
 		if (!e) e = window.event;
