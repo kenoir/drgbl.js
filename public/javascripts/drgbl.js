@@ -9,7 +9,7 @@ var Draggable = function(element, opts) {
 
     element.draggableInstance = draggable;
 
-    draggable.addListener(element,draggable.events.dragstart);
+    Draggable.addListener(element,draggable.events.dragstart);
 }
 Draggable.prototype.options = function(opts){
     var draggable = this;
@@ -25,15 +25,12 @@ Draggable.prototype.options = function(opts){
 	}
     }
 }
-Draggable.prototype.addListener = function(target,eventName){
-    target.addEventListener(eventName,Draggable.handleEvent,false);
-}
 Draggable.prototype.after = function(e,name){
     var target = Draggable.dragging || Draggable.eventTarget(e);
     var draggable = target.draggableInstance; 
 
     if(draggable && draggable.callback[name] instanceof Function){
-	    draggable.callback[name].call(target);
+      draggable.callback[name].call(target);
     }
 }
 Draggable.prototype.deviceEvents = function(){
@@ -56,8 +53,8 @@ Draggable.prototype.dragstart = function(e) {
     var draggable = this.draggableInstance;
 
     this.style.position = 'relative';
-    draggable.addListener(document,draggable.events.dragging);
-    draggable.addListener(document,draggable.events.dragend);
+    Draggable.addListener(document,draggable.events.dragging);
+    Draggable.addListener(document,draggable.events.dragend);
 
     var startingPosition = Draggable.dragPosition(e);
     var currentTargetPosition = Draggable.targetPosition(e);
@@ -94,19 +91,21 @@ Draggable.prototype.dragging = function(e) {
 }
 Draggable.prototype.dragend = function(e) {
     var draggable = this.draggableInstance;
-    document.removeEventListener(draggable.events.dragging, Draggable.handleEvent, false);
-    document.removeEventListener(draggable.events.dragend, Draggable.handleEvent, false);
+    Draggable.removeListener(document, draggable.events.dragging);
+    Draggable.removeListener(document, draggable.events.dragend);
     Draggable.dragging = undefined; 
 }
+
 Draggable.targetPosition = function(e) {
     var extractInt = function(value) {
         var n = parseInt(value);
         return n == null || isNaN(n) ? 0 : n;
     }
+    var target = Draggable.eventTarget(e);
 
     return {
-        x: extractInt(e.target.style.left),
-        y: extractInt(e.target.style.top),
+        x: extractInt(target.style.left),
+        y: extractInt(target.style.top),
     }
 }
 Draggable.eventTarget = function(e) {
@@ -141,3 +140,18 @@ Draggable.dragPosition = function(e) {
         y: posy
     };
 }
+Draggable.addListener = function(target,eventName){
+    if(target.addEventListener){
+      target.addEventListener(eventName,Draggable.handleEvent,false);
+    } else if(target.attachEvent){
+      target.attachEvent('on' + eventName,Draggable.handleEvent);
+    } 
+}
+Draggable.removeListener = function(target,eventName){
+    if(target.removeEventListener){ 
+      target.removeEventListener(eventName, Draggable.handleEvent, false);
+    } else if(target.detachEvent){
+      target.detachEvent('on' + eventName,Draggable.handleEvent);
+    }
+}
+
