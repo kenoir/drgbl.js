@@ -29,7 +29,7 @@
 		}
 	}
 	Draggable.prototype.after = function(e,name){
-		var target = Draggable.dragging || Draggable.eventTarget(e);
+		var target = Draggable.dragging || Draggable.draggableTarget(e);
 		var draggable = target.draggableInstance; 
 
 		if(draggable && draggable.callback[name] instanceof Function){
@@ -104,15 +104,18 @@
 			var n = parseInt(value);
 			return n == null || isNaN(n) ? 0 : n;
 		}
-		var target = Draggable.eventTarget(e);
+		var target = Draggable.draggableTarget(e);
 
 		return {
 			x: extractInt(target.style.left),
 			y: extractInt(target.style.top),
 		}
 	}
-	Draggable.eventTarget = function(e) {
-		var target = e.target || e.srcElement; 
+	Draggable.target = function(e){
+		return e.target || e.srcElement; 
+        }
+	Draggable.draggableTarget = function(e) {
+		var target = Draggable.target(e); 
 		var localTarget = target;
 
 		while(localTarget.parentNode && 
@@ -134,7 +137,7 @@
 	}
 	Draggable.handleEvent = function(e){
 		if (!e) e = window.event;
-		var target = Draggable.eventTarget(e);
+		var target = Draggable.draggableTarget(e);
 		var draggable = target.draggableInstance || Draggable.dragging.draggableInstance;
 
 		for(var eventName in draggable.events){
