@@ -53,6 +53,7 @@
 		Draggable.dragging = this; 
 	}
 	Draggable.prototype.dragging = function(e) {
+
 		var draggable = Draggable.dragging.draggableInstance;
 		var inPixels = function(n){
 			return n + "px";
@@ -74,6 +75,9 @@
 			}
 
 		}
+
+                e.preventDefault();
+
 	}
 	Draggable.prototype.dragend = function(e) {
 		var draggable = this.draggableInstance;
@@ -154,7 +158,12 @@
 		var posx = 0;
 		var posy = 0;
 		if (!e) var e = window.event;
-		if (e.pageX || e.pageY) {
+                
+                if (e.changedTouches[0]){
+                        posx = e.changedTouches[0].pageX;
+                        posy = e.changedTouches[0].pageY;
+                }
+                else if (e.pageX || e.pageY) {
 			posx = e.pageX;
 			posy = e.pageY;
 		}
@@ -162,6 +171,7 @@
 			posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
 			posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 		}
+
 		return {
 			x: posx,
 			y: posy
