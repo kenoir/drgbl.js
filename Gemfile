@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 gem 'sinatra'
 
 group :development,:test do
-        gem 'jslint'
+        #gem 'jslint'
 	gem 'travis-lint'
 	gem 'cucumber'
 	gem 'rake'

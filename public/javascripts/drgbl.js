@@ -2,8 +2,7 @@
 
 	function Draggable(element, opts) {
 		var draggable = this;
-
-		draggable.events = this.deviceEvents();
+		draggable.events = Draggable.deviceEvents;
 		draggable.axis = undefined;
 		draggable.callback = {};
 		draggable.bound = function(m){return true;};
@@ -35,22 +34,6 @@
 		if(draggable && draggable.callback[name] instanceof Function){
 			draggable.callback[name].call(target,e);
 		}
-	}
-	Draggable.prototype.deviceEvents = function(){
-		var isTouchDevice = !!('ontouchstart' in window) ? 1 : 0;
-
-		var touchEvents = { 
-			dragstart:'touchstart',
-			dragging:'touchmove',
-			dragend:'touchend'
-		}
-		var mouseEvents = {
-			dragstart:'mousedown',
-			dragging:'mousemove',
-			dragend:'mouseup'
-		}
-
-		return ( isTouchDevice ? touchEvents : mouseEvents );
 	}
 	Draggable.prototype.dragstart = function(e) {
 		var draggable = this.draggableInstance;
@@ -94,11 +77,29 @@
 	}
 	Draggable.prototype.dragend = function(e) {
 		var draggable = this.draggableInstance;
-		Draggable.removeListener(document, draggable.events.dragging);
-		Draggable.removeListener(document, draggable.events.dragend);
-		Draggable.dragging = undefined; 
+		if(draggable){
+			Draggable.removeListener(document, draggable.events.dragging);
+			Draggable.removeListener(document, draggable.events.dragend);
+			Draggable.dragging = undefined; 
+		}
 	}
+	Draggable.deviceEvents = (function(){
 
+		var isTouchDevice = !!('ontouchstart' in window) ? 1 : 0;
+
+		var touchEvents = { 
+			dragstart:'touchstart',
+			dragging:'touchmove',
+			dragend:'touchend'
+		}
+		var mouseEvents = {
+			dragstart:'mousedown',
+			dragging:'mousemove',
+			dragend:'mouseup'
+		}
+
+		return ( isTouchDevice ? touchEvents : mouseEvents );
+	})()
 	Draggable.targetPosition = function(e) {
 		var extractInt = function(value) {
 			var n = parseInt(value);
