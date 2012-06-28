@@ -9,6 +9,7 @@
 		draggable.options(opts);
 
 		element.draggableInstance = draggable;
+ 		element.drgbl = true;
 
 		Draggable.addListener(element,draggable.events.dragstart);
 	}
@@ -80,7 +81,8 @@
 
 	}
 	Draggable.prototype.dragend = function(e) {
-		var draggable = this.draggableInstance;
+		var draggable = Draggable.dragging.draggableInstance;
+
 		if(draggable){
 			Draggable.removeListener(document, draggable.events.dragging);
 			Draggable.removeListener(document, draggable.events.dragend);
@@ -159,7 +161,7 @@
 		var posy = 0;
 		if (!e) var e = window.event;
                 
-                if (e.changedTouches[0]){
+                if (e.changedTouches && e.changedTouches[0]){
                         posx = e.changedTouches[0].pageX;
                         posy = e.changedTouches[0].pageY;
                 }

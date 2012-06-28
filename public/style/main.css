@@ -10,3 +10,19 @@ body{
     text-align:center;    
 }
 
+.droppable{
+    position: absolute;
+    top: 20px;
+    left:50%;
+    border: 2px dashed grey;
+    color:grey;
+    height: 300px;
+    width:300px;
+    text-align:center;
+}
+
+.droppable span{
+  position:relative;
+  top: 140px;
+
+}
