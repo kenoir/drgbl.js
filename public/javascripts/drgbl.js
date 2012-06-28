@@ -7,6 +7,7 @@
 		draggable.callback = {};
 		draggable.bound = function(m){return true;};
 		draggable.options(opts);
+		draggable.topz = '999999';
 
 		element.draggableInstance = draggable;
  		element.drgbl = true;
@@ -28,7 +29,7 @@
 			}
 		}
 	}
-	Draggable.prototype.after = function(e,name){
+	Draggable.prototype.before= function(e,name){
 		var target = Draggable.dragging || Draggable.draggableTarget(e);
 		var draggable = target.draggableInstance; 
 
@@ -40,6 +41,8 @@
 		var draggable = this.draggableInstance;
 
 		this.style.position = 'relative';
+		this.style.zIndex = draggable.topz;
+
 		Draggable.addListener(document,draggable.events.dragging);
 		Draggable.addListener(document,draggable.events.dragend);
 
@@ -90,7 +93,6 @@
 		}
 	}
 	Draggable.deviceEvents = (function(){
-
 		var isTouchDevice = !!('ontouchstart' in window) ? 1 : 0;
 
 		var touchEvents = { 
@@ -149,8 +151,8 @@
 
 		for(var eventName in draggable.events){
 			if(draggable.events[eventName] == e.type){
+				draggable.before(e,eventName);
 				draggable[eventName].call(target,e);
-				draggable.after(e,eventName);
 			}
 		}
 
