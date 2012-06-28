@@ -3,6 +3,8 @@
     <link rel="stylesheet" type="text/css" href="/style/main.css"/>
 
     <script type="text/javascript" src="/javascripts/drgbl.js"></script>
+    <script type="text/javascript" src="/javascripts/drpbl.js"></script>
+
  </head>
   <body>
   <a href="https://github.com/kenoir/drgbl.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
@@ -30,6 +32,8 @@
       var draggableDiv2 = document.getElementById("dragBox2");
       var draggableDiv3 = document.getElementById("dragBox3");
 
+      var droppableDiv1 = document.getElementById("dropBox1");
+
       var opts1 = {
         axis:'x'
       };
@@ -56,6 +60,8 @@
       new Draggable(draggableDiv1,opts1);
       new Draggable(draggableDiv2,opts2);
       new Draggable(draggableDiv3,opts3);
+
+      new Droppable(droppableDiv1);
    </script>
  
   </body>

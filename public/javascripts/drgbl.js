@@ -11,11 +11,24 @@
     draggable.options(opts);
     draggable.topz = '999999';
 
+    draggable.addElement(element);
+
     element.draggableInstance = draggable;
     element.drgbl = true;
 
     Draggable.addListener(element, draggable.events.dragstart);
   }
+
+  Draggable.prototype.addElement = function ( element ){
+    var initialiseDraggableElements = function(){
+      if ( Draggable.elements == undefined ){
+        Draggable.elements = [];
+      }
+    }
+
+    initialiseDraggableElements();
+    Draggable.elements.push(element);
+   }
 
   Draggable.prototype.options = function (opts) {
     var draggable = this;
