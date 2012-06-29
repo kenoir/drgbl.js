@@ -11,15 +11,15 @@
     draggable.options(opts);
     draggable.topz = '999999';
 
-    draggable.addElement(element);
+    draggable.register(element);
 
     element.draggableInstance = draggable;
     element.drgbl = true;
 
-    Draggable.addListener(element, draggable.events.dragstart);
+    Draggable.addListener(element, draggable.events.dragstart, Draggable.handleEvent);
   }
 
-  Draggable.prototype.addElement = function ( element ){
+  Draggable.prototype.register = function ( element ){
     var initialiseDraggableElements = function(){
       if ( Draggable.elements == undefined ){
         Draggable.elements = [];
@@ -28,7 +28,7 @@
 
     initialiseDraggableElements();
     Draggable.elements.push(element);
-   }
+  }
 
   Draggable.prototype.options = function (opts) {
     var draggable = this;
@@ -60,8 +60,8 @@
     this.style.position = 'relative';
     this.style.zIndex = draggable.topz;
 
-    Draggable.addListener(document, draggable.events.dragging);
-    Draggable.addListener(document, draggable.events.dragend);
+    Draggable.addListener(document, draggable.events.dragging, Draggable.handleEvent);
+    Draggable.addListener(document, draggable.events.dragend, Draggable.handleEvent);
 
     var startingPosition = Draggable.dragPosition(e);
     var currentTargetPosition = Draggable.targetPosition(e);
@@ -98,16 +98,14 @@
 
     }
 
-    Draggable.preventDefault(e);
-    return false;
   }
 
   Draggable.prototype.dragend = function (e) {
     var draggable = Draggable.dragging.draggableInstance;
 
     if (draggable) {
-      Draggable.removeListener(document, draggable.events.dragging);
-      Draggable.removeListener(document, draggable.events.dragend);
+      Draggable.removeListener(document, draggable.events.dragging, Draggable.handleEvent);
+      Draggable.removeListener(document, draggable.events.dragend, Draggable.handleEvent);
       Draggable.dragging = undefined;
     }
   }
@@ -151,21 +149,11 @@
     var localTarget = target;
 
     while (localTarget.parentNode && localTarget.draggableInstance == undefined) {
-
-      Draggable.disableNativeDragging(localTarget);
       localTarget = localTarget.parentNode
     }
     if (localTarget.draggableInstance) target = localTarget;
 
     return target;
-  }
-
-  Draggable.disableNativeDragging = function (target) {
-    target.draggable = false;
-    target.onmousedown = function (e) {
-      Draggable.preventDefault();
-      return false;
-    };
   }
 
   Draggable.preventDefault = function (e) {
@@ -183,10 +171,11 @@
       if (draggable.events[eventName] == e.type) {
         draggable.before(e, eventName);
         draggable[eventName].call(target, e);
+
+        Draggable.preventDefault(e);
+	return false;
       }
     }
-
-    return true;
   }
 
   Draggable.dragPosition = function (e) {
@@ -211,19 +200,19 @@
     };
   }
 
-  Draggable.addListener = function (target, eventName) {
+  Draggable.addListener = function (target, eventName, callback) {
     if (target.addEventListener) {
-      target.addEventListener(eventName, Draggable.handleEvent, false);
+      target.addEventListener(eventName, callback, false);
     } else if (target.attachEvent) {
-      target.attachEvent('on' + eventName, Draggable.handleEvent);
+      target.attachEvent('on' + eventName, callback);
     }
   }
 
-  Draggable.removeListener = function (target, eventName) {
+  Draggable.removeListener = function (target, eventName, callback) {
     if (target.removeEventListener) {
-      target.removeEventListener(eventName, Draggable.handleEvent, false);
+      target.removeEventListener(eventName, callback, false);
     } else if (target.detachEvent) {
-      target.detachEvent('on' + eventName, Draggable.handleEvent);
+      target.detachEvent('on' + eventName, callback);
     }
   }
 
