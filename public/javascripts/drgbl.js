@@ -63,7 +63,7 @@
     Draggable.addListener(document, draggable.events.dragging, Draggable.handleEvent);
     Draggable.addListener(document, draggable.events.dragend, Draggable.handleEvent);
 
-    var startingPosition = Draggable.dragPosition(e);
+    var startingPosition = Draggable.eventPosition(e);
     var currentTargetPosition = Draggable.targetPosition(e);
 
     draggable.offset = {
@@ -81,7 +81,7 @@
         return n + "px";
       }
 
-    var currentMousePosition = Draggable.dragPosition(e);
+    var currentMousePosition = Draggable.eventPosition(e);
     var movePosition = {
       x: currentMousePosition.x + draggable.offset.x,
       y: currentMousePosition.y + draggable.offset.y
@@ -104,8 +104,16 @@
     var draggable = Draggable.dragging.draggableInstance;
 
     if (draggable) {
-      Draggable.removeListener(document, draggable.events.dragging, Draggable.handleEvent);
-      Draggable.removeListener(document, draggable.events.dragend, Draggable.handleEvent);
+      Draggable.removeListener(
+        document, 
+	draggable.events.dragging, 
+	Draggable.handleEvent);
+
+      Draggable.removeListener(
+        document, 
+	draggable.events.dragend, 
+	Draggable.handleEvent);
+
       Draggable.dragging = undefined;
     }
   }
@@ -128,12 +136,15 @@
   })()
   
   Draggable.targetPosition = function (e) {
-    var extractInt = function (value) {
-        var n = parseInt(value);
-        return n == null || isNaN(n) ? 0 : n;
-      }
     var target = Draggable.draggableTarget(e);
+    return Draggable.positionFromStyle(target);
+  }
 
+  Draggable.positionFromStyle = function (target) {
+   var extractInt = function (value) {
+      var n = parseInt(value);
+      return n == null || isNaN(n) ? 0 : n;
+    }
     return {
       x: extractInt(target.style.left),
       y: extractInt(target.style.top)
@@ -178,7 +189,7 @@
     }
   }
 
-  Draggable.dragPosition = function (e) {
+  Draggable.eventPosition = function (e) {
     var posx = 0;
     var posy = 0;
     if (!e) var e = window.event;
