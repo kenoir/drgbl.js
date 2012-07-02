@@ -17,7 +17,7 @@
       element.draggableInstance = draggable;
       element.drgbl = true;
 
-      Draggable.addListener(element, draggable.events.dragstart, Draggable.handleEvent);
+      Compatible.addListener(element, draggable.events.dragstart, Draggable.handleDragEvent);
     }
   }
 
@@ -62,11 +62,11 @@
     this.style.position = 'relative';
     this.style.zIndex = draggable.topz;
 
-    Draggable.addListener(document, draggable.events.dragging, Draggable.handleEvent);
-    Draggable.addListener(document, draggable.events.dragend, Draggable.handleEvent);
+    Compatible.addListener(document, draggable.events.dragging, Draggable.handleDragEvent);
+    Compatible.addListener(document, draggable.events.dragend, Draggable.handleDragEvent);
 
-    var startingPosition = Draggable.eventPosition(e);
-    var currentTargetPosition = Draggable.targetPosition(e);
+    var startingPosition = Compatible.eventPosition(e);
+    var currentTargetPosition = Draggable.draggableTargetPosition(e);
 
     draggable.offset = {
       x: currentTargetPosition.x - startingPosition.x,
@@ -83,7 +83,7 @@
         return n + "px";
       }
 
-    var currentMousePosition = Draggable.eventPosition(e);
+    var currentMousePosition = Compatible.eventPosition(e);
     var movePosition = {
       x: currentMousePosition.x + draggable.offset.x,
       y: currentMousePosition.y + draggable.offset.y
@@ -106,15 +106,15 @@
     var draggable = Draggable.dragging.draggableInstance;
 
     if (draggable) {
-      Draggable.removeListener(
+      Compatible.removeListener(
         document, 
 	draggable.events.dragging, 
-	Draggable.handleEvent);
+	Draggable.handleDragEvent);
 
-      Draggable.removeListener(
+      Compatible.removeListener(
         document, 
 	draggable.events.dragend, 
-	Draggable.handleEvent);
+	Draggable.handleDragEvent);
 
       Draggable.dragging = undefined;
     }
@@ -137,20 +137,9 @@
     return (isTouchDevice ? touchEvents : mouseEvents);
   })()
   
-  Draggable.targetPosition = function (e) {
+  Draggable.draggableTargetPosition = function (e) {
     var target = Draggable.draggableTarget(e);
-    return Draggable.positionFromStyle(target);
-  }
-
-  Draggable.positionFromStyle = function (target) {
-   var extractInt = function (value) {
-      var n = parseInt(value);
-      return n == null || isNaN(n) ? 0 : n;
-    }
-    return {
-      x: extractInt(target.style.left),
-      y: extractInt(target.style.top)
-    }
+    return Compatible.positionFromStyle(target);
   }
 
   Draggable.draggableTarget = function (e) {
@@ -165,13 +154,7 @@
     return target;
   }
 
-  Draggable.preventDefault = function (e) {
-    if (e && e.preventDefault instanceof Function) {
-      e.preventDefault();
-    }
-  }
-
-  Draggable.handleEvent = function (e) {
+  Draggable.handleDragEvent = function (e) {
     if (!e) e = window.event;
     var target = Draggable.draggableTarget(e);
     var draggable = target.draggableInstance || Draggable.dragging.draggableInstance;
@@ -181,47 +164,9 @@
         draggable.before(e, eventName);
         draggable[eventName].call(target, e);
 
-        Draggable.preventDefault(e);
+        Compatible.preventDefault(e);
 	return false;
       }
-    }
-  }
-
-  Draggable.eventPosition = function (e) {
-    var posx = 0;
-    var posy = 0;
-    if (!e) var e = window.event;
-
-    if (e.changedTouches && e.changedTouches[0]) {
-      posx = e.changedTouches[0].pageX;
-      posy = e.changedTouches[0].pageY;
-    } else if (e.pageX || e.pageY) {
-      posx = e.pageX;
-      posy = e.pageY;
-    } else if (e.clientX || e.clientY) {
-      posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-      posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-    }
-
-    return {
-      x: posx,
-      y: posy
-    };
-  }
-
-  Draggable.addListener = function (target, eventName, callback) {
-    if (target.addEventListener) {
-      target.addEventListener(eventName, callback, false);
-    } else if (target.attachEvent) {
-      target.attachEvent('on' + eventName, callback);
-    }
-  }
-
-  Draggable.removeListener = function (target, eventName, callback) {
-    if (target.removeEventListener) {
-      target.removeEventListener(eventName, callback, false);
-    } else if (target.detachEvent) {
-      target.detachEvent('on' + eventName, callback);
     }
   }
 

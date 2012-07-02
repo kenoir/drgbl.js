@@ -7,7 +7,7 @@
 
 			//TODO: drpbl should fire custom events so we
 			// don't have to rely on mouseup
-			Draggable.addListener(
+			Compatible.addListener(
 			  document,
 				'mouseup',
 				function() { 
@@ -30,6 +30,18 @@
 			console.log(Compatible.positionFromOffset(Draggable.elements[i]));
 		}	
  	}
+
+	Droppable.intersect = function(firstElement,secondElement){
+		var inRange = function(n,start,end){
+			if(start <= n && end >= n){
+				return true;
+			}
+			return false;
+		}
+
+
+
+	}
 
 	if ( typeof define === 'function' && 
 		define.amd ) {
