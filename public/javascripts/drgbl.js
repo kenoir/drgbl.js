@@ -1,22 +1,24 @@
 (function (exports) {
 
   function Draggable(element, opts) {
-    var draggable = this;
-    draggable.events = Draggable.deviceEvents;
-    draggable.axis = undefined;
-    draggable.callback = {};
-    draggable.bound = function (m) {
-      return true;
-    };
-    draggable.options(opts);
-    draggable.topz = '999999';
+    if(Compatible){
+      var draggable = this;
+      draggable.events = Draggable.deviceEvents;
+      draggable.axis = undefined;
+      draggable.callback = {};
+      draggable.bound = function (m) {
+        return true;
+      };
+      draggable.options(opts);
+      draggable.topz = '999999';
 
-    draggable.register(element);
+      draggable.register(element);
 
-    element.draggableInstance = draggable;
-    element.drgbl = true;
+      element.draggableInstance = draggable;
+      element.drgbl = true;
 
-    Draggable.addListener(element, draggable.events.dragstart, Draggable.handleEvent);
+      Draggable.addListener(element, draggable.events.dragstart, Draggable.handleEvent);
+    }
   }
 
   Draggable.prototype.register = function ( element ){
@@ -151,12 +153,8 @@
     }
   }
 
-  Draggable.target = function (e) {
-    return e.target || e.srcElement;
-  }
-
   Draggable.draggableTarget = function (e) {
-    var target = Draggable.target(e);
+    var target = Compatible.target(e);
     var localTarget = target;
 
     while (localTarget.parentNode && localTarget.draggableInstance == undefined) {

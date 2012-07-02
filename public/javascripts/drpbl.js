@@ -1,7 +1,7 @@
 (function ( exports ) {
 
 	function Droppable ( element, callback ) {
-		if ( Draggable ){
+		if ( Draggable && Compatible ){
 			element.drpbl = true;
 			self = this;
 
@@ -17,16 +17,17 @@
 	}
 
 	Droppable.prototype.dropped = function(e){
+
 		console.log('t-w',this.offsetWidth);
 		console.log('t-h',this.offsetHeight);
-		console.log('t-l',this.offsetLeft);
-		console.log('t-t',this.offsetTop);
+
+		console.log(Compatible.positionFromOffset(this));
 
 		for ( var i = 0; i < Draggable.elements.length; i++ ){
 			console.log('w'+i,Draggable.elements[i].offsetWidth);
 			console.log('h'+i,Draggable.elements[i].offsetHeight);
-			console.log('l'+i,Draggable.elements[i].offsetLeft);
-			console.log('t'+i,Draggable.elements[i].offsetTop);
+
+			console.log(Compatible.positionFromOffset(Draggable.elements[i]));
 		}	
  	}
 
