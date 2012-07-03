@@ -12,7 +12,7 @@ body{
 
 .droppable{
     position: absolute;
-    top: 20px;
+    top: 111px;
     left:50%;
     border: 2px dashed grey;
     color:grey;
@@ -25,4 +25,14 @@ body{
   position:relative;
   top: 140px;
 
+}
+
+h2 {
+    color:lightgrey;  
+    font-size: 1.3em;
+    margin-top: 10px;    
+}
+
+p.note {
+  font-size:0.9em    
 }
