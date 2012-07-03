@@ -3,6 +3,8 @@
   function Draggable(element, opts) {
     if(Compatible){
       var draggable = this;
+
+      Draggable.register(element);
       draggable.events = Draggable.deviceEvents;
       draggable.axis = undefined;
       draggable.callback = {};
@@ -12,8 +14,6 @@
       draggable.options(opts);
       draggable.topz = '999999';
 
-      draggable.register(element);
-
       element.draggableInstance = draggable;
       element.drgbl = true;
 
@@ -21,7 +21,7 @@
     }
   }
 
-  Draggable.prototype.register = function ( element ){
+  Draggable.register = function ( element ){
     var initialiseDraggableElements = function(){
       if ( Draggable.elements == undefined ){
         Draggable.elements = [];
@@ -165,7 +165,6 @@
         draggable[eventName].call(target, e);
 
         Compatible.preventDefault(e);
-	return false;
       }
     }
   }

@@ -45,6 +45,7 @@
   }
 
   Compatible.addListener = function (target, eventName, callback) {
+
     if (target.addEventListener) {
       target.addEventListener(eventName, callback, false);
     } else if (target.attachEvent) {
@@ -60,20 +61,31 @@
     }
   }
 
+  // Shamelessly copied from Prototype.js source ...
+  Compatible.positionFromOffset = function(t) {
+    var element = t;
+    var valueT = 0, valueL = 0, docBody = document.body;
 
-  Compatible.positionFromOffset = function (target){
-    var currentLeft = currentTop = 0;
+    do {
+      valueT += element.offsetTop  || 0;
+      valueL += element.offsetLeft || 0;
+      // Safari fix
+      if (element.offsetParent == docBody &&
+        element.style.position == 'absolute') break;
+    } while (element = element.offsetParent);
 
-    if (target.offsetParent) {
-      while (target.offsetParent) {
-        currentLeft += target.offsetLeft;
-       	currentTop = target.offsetTop;
-	      target = target.offsetParent;
+    element = t;
+    do {
+      // Opera < 9.5 sets scrollTop/Left on both HTML and BODY elements.
+      // Other browsers set it only on the HTML element. The BODY element
+      // can be skipped since its scrollTop/Left should always be 0.
+      if (element != docBody) {
+        valueT -= element.scrollTop  || 0;
+        valueL -= element.scrollLeft || 0;
       }
+    } while (element = element.parentNode);    
 
-      return { x: currentLeft, y: currentTop }
-    }
-
+    return { x: valueL, y:valueT };
   }
 
   Compatible.target = function (e) {
