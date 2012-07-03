@@ -17,21 +17,16 @@
 	}
 
 	Droppable.prototype.dropped = function(e){
-
-		console.log('t-w',this.offsetWidth);
-		console.log('t-h',this.offsetHeight);
-
-		console.log(Compatible.positionFromOffset(this));
-
 		for ( var i = 0; i < Draggable.elements.length; i++ ){
-			console.log('w'+i,Draggable.elements[i].offsetWidth);
-			console.log('h'+i,Draggable.elements[i].offsetHeight);
-
-			console.log(Compatible.positionFromOffset(Draggable.elements[i]));
+			var intersect = Droppable.intersect(this,Draggable.elements[i]);
+			if(intersect){
+				console.log("INTERSECT",Draggable.elements[i]);
+			}
 		}	
  	}
 
 	Droppable.intersect = function(firstElement,secondElement){
+
 		var inRange = function(n,start,end){
 			if(start <= n && end >= n){
 				return true;
@@ -39,7 +34,47 @@
 			return false;
 		}
 
+		var edgeIntersect = function(firstEdge,secondEdge){
+			if( inRange(firstEdge.e0,secondEdge.e0,secondEdge.e1 ||
+					inRange(firstEdge.e1,secondEdge.e0,secondEdge,e1))){
 
+						return true;
+			}
+			return false;
+		}
+
+		var topEdge = function(p,w){
+			return {
+				e0: p.x,
+				e1: p.x + w
+			}
+		}
+
+		var sideEdge = function(p,h){
+			return {
+				e0: p.y,
+				e1: p.y + h
+			}
+		}
+	
+		var p1 = Compatible.positionFromOffset(firstElement);
+		var p2 = Compatible.positionFromOffset(secondElement);
+		var w1 = firstElement.offsetWidth;
+		var w2 = secondElement.offsetWidth;
+		var h1 = firstElement.offsetHeight;
+		var h2 = secondElement.offsetHeight;
+
+		if(edgeIntersect(
+				topEdge(p1,w1),
+				topEdge(p2,w2)) ||
+			 edgeIntersect(
+				sideEdge(p1,h2),
+				sideEdge(p2,h2))){
+
+				return true;
+		}
+
+		return false;
 
 	}
 
