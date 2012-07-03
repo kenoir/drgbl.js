@@ -5,14 +5,15 @@
 			element.drpbl = true;
 			self = this;
 
-			//TODO: drpbl should fire custom events so we
-			// don't have to rely on mouseup
 			Compatible.addListener(
 			  document,
-				'mouseup',
+				Draggable.deviceEvents.dragend,
 				function() { 
-				  self.dropped.call(element);
-				});
+					if(self.dropped.call(element)){
+						callback.call(Draggable.dragging);
+					}							
+				}
+			);
 		} 
 	}
 
@@ -20,7 +21,7 @@
 		for ( var i = 0; i < Draggable.elements.length; i++ ){
 			var intersect = Droppable.intersect(this,Draggable.elements[i]);
 			if(intersect){
-				console.log("INTERSECT",Draggable.elements[i]);
+				return true;
 			}
 		}	
  	}

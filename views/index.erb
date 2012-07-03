@@ -57,12 +57,14 @@
         }
       };
 
-
       new Draggable(draggableDiv1,opts1);
       new Draggable(draggableDiv2,opts2);
       new Draggable(draggableDiv3,opts3);
 
-      new Droppable(droppableDiv1);
+      new Droppable(droppableDiv1,function(){
+        droppableDiv1.style.backgroundColor='purple';
+        this.style.backgroundColor='yellow';
+      });
    </script>
  
   </body>
