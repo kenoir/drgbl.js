@@ -3,6 +3,8 @@ drgbl.js
 
 Simple Drag &amp; Drop in the browser without a framework
 
+[See me working.](http://kenoir.github.com/drgbl.js)
+
 ## Example
 
       var draggableDiv1 = document.getElementById("dragBox1");
