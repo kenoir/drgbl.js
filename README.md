@@ -7,6 +7,13 @@ Simple Drag &amp; Drop in the browser without a framework
 
 ## Example
 
+      <script type="text/javascript" src="cmptbl.js"></script>
+      <script type="text/javascript" src="drgbl.js"></script>
+      <script type="text/javascript" src="drpbl.js"></script>
+	
+      ...
+
+
       var draggableDiv1 = document.getElementById("dragBox1");
       var draggableDiv2 = document.getElementById("dragBox2");
       var draggableDiv3 = document.getElementById("dragBox3");
