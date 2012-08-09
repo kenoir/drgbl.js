@@ -1,10 +1,36 @@
-drgbl.js
-============
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/style/main.css"/>
 
-Simple Drag &amp; Drop in the browser without a framework
+    <script type="text/javascript" src="/javascripts/cmptbl.js"></script>
+    <script type="text/javascript" src="/javascripts/drgbl.js"></script>
+    <script type="text/javascript" src="/javascripts/drpbl.js"></script>
 
-## Example
+ </head>
+  <body>
+  <a href="https://github.com/kenoir/drgbl.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
+    <h1>drgbl / drpbl / cmptbl</h1>
+    <h2>draggable / droppable / compatible</h2>
+    <p class="note">Lightweight cross browser drag/drop library</p>
+
+    <div id="dragBox1" class="draggable">
+      Drag me!
+    </div>
+
+    <div id="dragBox2" class="draggable">
+      Me too!
+    </div>
+
+    <div id="dragBox3" class="draggable">
+      And me!
+    </div>
+
+    <div id="dropBox1" class="droppable">
+      <span>Drop stuff on me ...</span>
+    </div>
+
+    <script type="text/javascript">
       var draggableDiv1 = document.getElementById("dragBox1");
       var draggableDiv2 = document.getElementById("dragBox2");
       var draggableDiv3 = document.getElementById("dragBox3");
@@ -45,4 +71,7 @@ Simple Drag &amp; Drop in the browser without a framework
       }
 
       new Droppable(droppableDiv1,events1);
-
+   </script>
+ 
+  </body>
+</html>
